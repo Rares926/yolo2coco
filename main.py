@@ -1,17 +1,10 @@
 from pathlib import Path
-from queue import Empty
 
-from create_annotations import (
-    create_image_annotation,
-    create_annotation_from_yolo_format,
-)
-
+from Utils.debug import debug
 from Utils.utils import (get_data,
                          get_classes_list)
-import cv2
+
 import argparse
-import json
-import numpy as np
 import json
 
 Data = {
@@ -39,30 +32,39 @@ def get_args():
         "-cpy",
         "--copy_images",
         action='store_true',
-        help="Output location for the coco dataset format",
+        help="Either to copy the images at the output path too",
+    )
+    parser.add_argument(
+        "--debug",
+        action="store_true",
+        help="Visualize bounding box and print annotation information",
     )
 
     args = parser.parse_args()
     return args
 
 
-
 def main(opt):
 
-    print("Start!")
     classes = get_classes_list(opt)
-    data = get_data(opt,Data,classes)
+    print("Start!")
 
-    annot_path = opt.output+"/annotations"
-    Path(annot_path).mkdir(parents=True, exist_ok=True)
+    if opt.debug is True:
+        debug(opt, classes)
+        print("Debug Finished!")
+    else:
+
+        data = get_data(opt,Data,classes)
+
+        annot_path = opt.output+"/annotations"
+        Path(annot_path).mkdir(parents=True, exist_ok=True)
 
 
-    for key in data:
-        if data[key]:
-            file_name = annot_path + "/instances_" + str(key) + ".json"
-            with open(file_name, "w") as outfile:
-                json.dump(data[key], outfile, indent=4)
-
+        for key in data:
+            if data[key]:
+                file_name = annot_path + "/instances_" + str(key) + ".json"
+                with open(file_name, "w") as outfile:
+                    json.dump(data[key], outfile, indent=4)
 
     print("hehe")
 

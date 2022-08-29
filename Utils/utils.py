@@ -1,7 +1,7 @@
 
 from pathlib import Path
 
-from create_annotations import (
+from Utils.create_annotations import (
     create_image_annotation,
     create_annotation_from_yolo_format
 )
@@ -42,6 +42,7 @@ def get_data(opt, Data, classes):
 
     if train_path.is_file():
         Data["train"]={"images": [{}], "categories": [], "annotations": [{}]}
+        print("Processing train images:")
         Data["train"]["images"],Data["train"]["annotations"]=get_images_info_and_annotations(train_path, images_path)
         for index, label in enumerate(classes):
             categories = {
@@ -53,6 +54,7 @@ def get_data(opt, Data, classes):
 
     if test_path.is_file():
         Data["test"]={"images": [{}], "categories": [], "annotations": [{}]}
+        print("Processing test images:")
         Data["test"]["images"],Data["test"]["annotations"]=get_images_info_and_annotations(test_path, images_path)
         for index, label in enumerate(classes):
             categories = {
@@ -82,7 +84,7 @@ def get_images_info_and_annotations(path: str, copy_path: str= " "):
             shutil.copy(str(file_path),copy_path)
 
         # Check how many items have progressed
-        print("\rProcessing " + str(image_id) + " ...", end='')
+        print("Processing " + str(image_id) + " ..."+str(file_path.name)+"\n", end='')
 
         # Build image annotation, known the image's width and height
         w, h = imagesize.get(str(file_path))
