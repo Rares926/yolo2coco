@@ -11,6 +11,7 @@ import argparse
 import json
 import numpy as np
 import imagesize
+import shutil
 
 coco_format = {"images": [{}], "categories": [], "annotations": [{}]}
 
@@ -33,9 +34,15 @@ def get_data(opt, Data, classes):
     train_path = Path(opt.path + "/train.txt")
     test_path = Path(opt.path + "/test.txt")
 
+    copy_images = opt.copy_images
+
+    if copy_images:
+        images_path = opt.output+"/images"
+        Path(images_path).mkdir(parents=True, exist_ok=True)
+
     if train_path.is_file():
         Data["train"]={"images": [{}], "categories": [], "annotations": [{}]}
-        Data["train"]["images"],Data["train"]["annotations"]=get_images_info_and_annotations(train_path)
+        Data["train"]["images"],Data["train"]["annotations"]=get_images_info_and_annotations(train_path, images_path)
         for index, label in enumerate(classes):
             categories = {
                 "supercategory": "Defect",
@@ -46,7 +53,7 @@ def get_data(opt, Data, classes):
 
     if test_path.is_file():
         Data["test"]={"images": [{}], "categories": [], "annotations": [{}]}
-        Data["test"]["images"],Data["test"]["annotations"]=get_images_info_and_annotations(train_path)
+        Data["test"]["images"],Data["test"]["annotations"]=get_images_info_and_annotations(test_path, images_path)
         for index, label in enumerate(classes):
             categories = {
                 "supercategory": "Defect",
@@ -58,7 +65,7 @@ def get_data(opt, Data, classes):
     return Data
 
 
-def get_images_info_and_annotations(path: str):
+def get_images_info_and_annotations(path: str, copy_path: str= " "):
     annotations = []
     images_annotations = []
 
@@ -70,6 +77,10 @@ def get_images_info_and_annotations(path: str):
     annotation_id = 1  # In COCO dataset format, you must start annotation id with '1'
 
     for file_path in file_paths:
+        #if wanted copy the image 
+        if copy_path != " ":
+            shutil.copy(str(file_path),copy_path)
+
         # Check how many items have progressed
         print("\rProcessing " + str(image_id) + " ...", end='')
 

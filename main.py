@@ -22,6 +22,7 @@ Data = {
 
 def get_args():
     parser = argparse.ArgumentParser("Yolo format annotations to COCO dataset format")
+    
     parser.add_argument(
         "-p",
         "--path",
@@ -29,10 +30,18 @@ def get_args():
         help="Absolute path for yolo format dataset.",
     )
     parser.add_argument(
+        "-o",
         "--output",
         type=str,
         help="Output location for the coco dataset format",
     )
+    parser.add_argument(
+        "-cpy",
+        "--copy_images",
+        action='store_true',
+        help="Output location for the coco dataset format",
+    )
+
     args = parser.parse_args()
     return args
 

@@ -23,7 +23,8 @@
                 "--path",
                 "C:/ML/workspace_new/detr/small_for_testing/yolo",
                 "--output",
-                "C:/ML/workspace_new/detr/small_for_testing/coco"
+                "C:/ML/workspace_new/detr/small_for_testing/coco",
+                "-cpy"
             ]
         }
     ]
