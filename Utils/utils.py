@@ -1,17 +1,12 @@
 
 from pathlib import Path
+import imagesize
+import shutil
 
 from Utils.create_annotations import (
     create_image_annotation,
     create_annotation_from_yolo_format
 )
-
-import cv2
-import argparse
-import json
-import numpy as np
-import imagesize
-import shutil
 
 coco_format = {"images": [{}], "categories": [], "annotations": [{}]}
 
@@ -34,11 +29,11 @@ def get_data(opt, Data, classes):
     train_path = Path(opt.path + "/train.txt")
     test_path = Path(opt.path + "/test.txt")
 
-    copy_images = opt.copy_images
-
-    if copy_images:
+    if opt.copy_images:
         images_path = opt.output+"/images"
         Path(images_path).mkdir(parents=True, exist_ok=True)
+    else:     
+        images_path = " "
 
     if train_path.is_file():
         Data["train"]={"images": [{}], "categories": [], "annotations": [{}]}
@@ -78,10 +73,15 @@ def get_images_info_and_annotations(path: str, copy_path: str= " "):
     image_id = 0
     annotation_id = 1  # In COCO dataset format, you must start annotation id with '1'
 
+    # just in case of unnecessary endlines in the txt file 
+    file_paths = [file for file in file_paths if str(file)!= "." ]
+
     for file_path in file_paths:
         #if wanted copy the image 
         if copy_path != " ":
-            shutil.copy(str(file_path),copy_path)
+            file = str(file_path)
+            if file != ".":
+                shutil.copy(file,copy_path)
 
         # Check how many items have progressed
         print("Processing " + str(image_id) + " ..."+str(file_path.name)+"\n", end='')

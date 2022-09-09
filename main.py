@@ -53,12 +53,10 @@ def main(opt):
         debug(opt, classes)
         print("Debug Finished!")
     else:
-
         data = get_data(opt,Data,classes)
 
         annot_path = opt.output+"/annotations"
         Path(annot_path).mkdir(parents=True, exist_ok=True)
-
 
         for key in data:
             if data[key]:
@@ -66,7 +64,7 @@ def main(opt):
                 with open(file_name, "w") as outfile:
                     json.dump(data[key], outfile, indent=4)
 
-    print("hehe")
+    print("heheDONE")
 
 
 if __name__ == "__main__":
