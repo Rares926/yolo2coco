@@ -35,6 +35,12 @@ def get_args():
         help="Either to copy the images at the output path too",
     )
     parser.add_argument(
+        "-s",
+        "--show",
+        action='store_true',
+        help="Either to display the images and their annotations or not ",
+    )
+    parser.add_argument(
         "--debug",
         action="store_true",
         help="Visualize bounding box and print annotation information",
@@ -65,6 +71,7 @@ def main(opt):
                     json.dump(data[key], outfile, indent=4)
 
     print("heheDONE")
+    
 
 
 if __name__ == "__main__":

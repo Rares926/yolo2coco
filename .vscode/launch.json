@@ -21,10 +21,11 @@
             "justMyCode": true,
             "args":[
                 "--path",
-                "C:/ML/workspace_new/detr/small_for_testing/yolo",
+                "C:/ML/workspace_new/detr/flat_bars/2_processed_data/yolo_124_832",
                 "--output",
                 "C:/ML/workspace_new/detr/small_for_testing/coco",
-                "-cpy"
+                "-cpy",
+                "--debug"
             ]
         }
     ]
